@@ -1,15 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
-import ReactPlayer from 'react-player';
+import React from 'react';
+import VideoPlayer from './components/video-player/VideoPlayer';
+import VideoPlayerSample from './components/video-player-sample/VideoPlayerSample';
 
-import VideoPlayer from './components/VideoPlayer';
+function App({ environment, videoUrl, previewUrl, controls = true }) {
+  const renderVideoPlayer = () => {
+    switch (environment) {
+      case 'development':
+        return <VideoPlayerSample videoUrl={videoUrl} previewUrl={previewUrl} controls={controls} />;
+      case 'staging':
+        return <VideoPlayerSample videoUrl={videoUrl} previewUrl={previewUrl} controls={controls} />;
+      case 'production':
+        return <VideoPlayer videoUrl={videoUrl} previewUrl={previewUrl} controls={controls} />;
+      default:
+        return <VideoPlayerSample videoUrl={videoUrl} previewUrl={previewUrl} controls={controls} />;
+    }
+  };
 
-function App() {
   return (
-    
-    <div className="App">
-      <ReactPlayer url='https://www.youtube.com/watch?v=dQw4w9WgXcQ' />
-    </div>
+    <React.StrictMode>
+      <div className="App">
+        {renderVideoPlayer()}
+      </div>
+    </React.StrictMode>
   );
 }
 
